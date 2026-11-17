@@ -1,0 +1,8 @@
+import { formatCurrency } from '../utils/formatters'
+
+export default function Insights({ totals, products }) {
+  const averageMargin = products.length ? products.reduce((sum, product) => sum + product.sale - product.buy, 0) / products.length : 0
+  return <div className="bottom-grid"><div className="insight-card"><div className="card-title"><div><h2>Resumen de ventas</h2><p>Tu actividad de ventas hasta hoy.</p></div><span className="growth">↑ 12.5%</span></div><div className="sales-number"><strong>{formatCurrency(totals.sales)}</strong><span>Ventas acumuladas</span></div><div className="bars">{[38, 52, 45, 68, 58, 82, 93].map((height, index) => <i className={index === 6 ? 'today' : ''} style={{ height: `${height}%` }} key={index} />)}</div><div className="days"><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Hoy</span></div></div><div className="insight-card"><div className="card-title"><div><h2>Rendimiento</h2><p>Una vista rápida de tu inventario.</p></div></div><Progress label="Stock disponible" value={`${totals.units} unidades`} width={Math.min(100, totals.units / 1.2)} /><Progress label="Margen promedio" value={formatCurrency(averageMargin)} width={72} tone="purple" /><div className="tip">✦ <div><strong>Buen trabajo</strong><p>Tu inventario está creciendo. Sigue así.</p></div></div></div></div>
+}
+
+function Progress({ label, value, width, tone = '' }) { return <div className="progress-row"><div><span>{label}</span><strong>{value}</strong></div><div className="progress"><i className={tone} style={{ width: `${width}%` }} /></div></div> }
